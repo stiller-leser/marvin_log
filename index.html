@@ -32,12 +32,13 @@
       });
 
       console.log(coordinates)
+      map.panTo(coordinates[0])
 
       // Create a polyline and add it to the map
-      const polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
+      // const polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
 
       // Fit the map view to the bounds of the polyline
-      map.fitBounds(polyline.getBounds());
+      // map.fitBounds(polyline.getBounds());
     }
 
     // Fetch GPS data from the server and create the map with the polyline
