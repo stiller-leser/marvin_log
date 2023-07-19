@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GPS Coordinates Map</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+  <div id="map" style="height: 400px;"></div>
+
+  <script>
+    // Function to create the map and draw a polyline connecting GPS data points
+    function createMap(gpsDataArray) {
+      // Initialize the map
+      const map = L.map('map').setView([0, 0], 13);
+
+      // Add the tile layer (OpenStreetMap)
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      // Array to store the GPS coordinates as LatLng objects
+      const coordinates = [];
+
+      // Loop through GPS data and add LatLng objects to the array
+      gpsDataArray.forEach(gpsData => {
+        const [latitude, longitude] = parseGPSData(gpsData);
+        coordinates.push(L.latLng(latitude, longitude));
+      });
+
+      // Create a polyline and add it to the map
+      const polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
+
+      // Fit the map view to the bounds of the polyline
+      map.fitBounds(polyline.getBounds());
+    }
+
+    // Fetch GPS data from the server and create the map with the polyline
+    fetch('/gps')
+      .then(response => response.json())
+      .then(data => {
+        createMap(data.gpsDataArray);
+      })
+      .catch(error => {
+        console.error('Error fetching GPS data:', error);
+      });
+
+    // Function to parse GPS coordinates from the data
+    function parseGPSData(gpsData) {
+      const [, latitude, longitude] = gpsData.match(/(\d+\.\d+),(\d+\.\d+[NSEW])/);
+      return [parseFloat(latitude), parseFloat(longitude)];
+    }
+  </script>
+</body>
+</html>

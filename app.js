@@ -20,6 +20,31 @@ const pool = mysql.createPool(dbConfig);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/gps', (req, res) => {
+  pool.getConnection((err, connection) => {
+    if (err) {
+      console.error('Error establishing connection to MySQL:', err);
+      return res.status(500).json({ error: 'Database error' });
+    }
+
+    const selectQuery = 'SELECT data FROM data ORDER BY timestamp ASC';
+    connection.query(selectQuery, (err, results) => {
+      connection.release();
+      if (err) {
+        console.error('Error executing MySQL query:', err);
+        return res.status(500).json({ error: 'Database error' });
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({ error: 'GPS data not found' });
+      }
+
+      const gpsDataArray = results.map(row => row.data);
+      return res.status(200).json({ gpsDataArray });
+    });
+  });
+});
+
 // POST route to handle data logging
 app.post('/gps', (req, res) => {
   const dataToLog = req.body.data;
