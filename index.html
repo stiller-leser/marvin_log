@@ -14,7 +14,10 @@
     // Function to create the map and draw a polyline connecting GPS data points
     function createMap(gpsDataArray) {
       // Initialize the map
-      const map = L.map('map').setView([0, 0], 13);
+      const map = L.map('map', {
+        center: [0,0],
+        zoom: 13
+      })
 
       // Add the tile layer (OpenStreetMap)
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -32,6 +35,7 @@
       });
 
       console.log(coordinates)
+      console.log(coordinates[0])
       map.panTo(coordinates[0])
 
       // Create a polyline and add it to the map
