@@ -26,7 +26,9 @@
 
       // Loop through GPS data and add LatLng objects to the array
       gpsDataArray.forEach(gpsData => {
-        const [latitude, longitude] = parseGPSData(gpsData);
+        parsedGPSData = parseGPSData(gpsData)
+        console.log(parsedGPSData)
+        const [latitude, longitude] = parsedGPSData;
         coordinates.push(L.latLng(latitude, longitude));
       });
 
