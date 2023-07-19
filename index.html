@@ -34,11 +34,14 @@
 
       // Loop through GPS data and add LatLng objects to the array
       gpsDataArray.forEach(gpsData => {
-        parsedGPSData = parseGPSData(gpsData)
-        const [latitude, longitude] = parsedGPSData;
+        const { timestamp, latitude, longitude, altitude, speed } = parseGPSData(gpsData);
+        console.log(latitude)
+        console.log(longitude)
         var marker = L.marker([latitude, longitude]).addTo(map);
         coordinates.push(L.latLng(latitude, longitude));
       });
+
+      console.log(coordinates)
 
       map.flyTo(coordinates[0], 13)
 
@@ -61,8 +64,14 @@
 
     // Function to parse GPS coordinates from the data
     function parseGPSData(gpsData) {
-      const [,latitude, longitude] = gpsData.match(/(\d+\.\d+[NSEW]),(\d+\.\d+[NSEW])/);
-      return [parseFloat(latitude), parseFloat(longitude)];
+      const [, timestamp, latitude, longitude, altitude, speed] = gpsData.match(/:(.*),(.*)([NSEW]),(.*)([NSEW]),(.*),(.*)$/);
+      return {
+        timestamp,
+        latitude: parseFloat(latitude) * (latitude.endsWith("S") ? -1 : 1),
+        longitude: parseFloat(longitude) * (longitude.endsWith("W") ? -1 : 1),
+        altitude: parseFloat(altitude),
+        speed: parseFloat(speed),
+      };
     }
   </script>
 </body>
