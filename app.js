@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // POST route to handle data logging
 app.post('/gps', (req, res) => {
   const dataToLog = req.body.data;
-  const queryKey = req.query.key;
+  const queryKey = req.query.access;
 
   // Check if the query parameter "key" is present and has the value "verySecret"
   if (queryKey !== process.env.GPS_ACCESS_KEY) {
@@ -33,7 +33,7 @@ app.post('/gps', (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
       console.error('Error establishing connection to MySQL:', err);
-      return res.status(500).json({ error: 'Database error' });
+      return res.status(500).json({ error: err });
     }
 
     const insertQuery = 'INSERT INTO data (data) VALUES (?)';
@@ -41,7 +41,7 @@ app.post('/gps', (req, res) => {
       connection.release();
       if (err) {
         console.error('Error executing MySQL query:', err);
-        return res.status(500).json({ error: 'Database error' });
+        return res.status(500).json({ error: err });
       }
 
       console.log('Data logged successfully:', result);
