@@ -39,7 +39,7 @@ app.get('/gps', (req, res) => {
         return res.status(404).json({ error: 'GPS data not found' });
       }
 
-      const gpsDataArray = results.map(row => row.data);
+      const gpsDataArray = results.map(row => row.data.trim());
       return res.status(200).json({ gpsDataArray });
     });
   });
