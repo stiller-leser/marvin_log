@@ -2,7 +2,7 @@
   "name": "log.rueckenwin.de",
   "version": "1.0.0",
   "description": "A log application for marvin wheely",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
