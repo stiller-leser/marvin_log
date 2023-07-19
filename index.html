@@ -51,7 +51,7 @@
 
     // Function to parse GPS coordinates from the data
     function parseGPSData(gpsData) {
-      const [, latitude, longitude] = gpsData.match(/(\d+\.\d+),(\d+\.\d+[NSEW])/);
+      const [latitude, longitude] = gpsData.match(/(\d+\.\d+[NSEW]),(\d+\.\d+[NSEW])/);
       return [parseFloat(latitude), parseFloat(longitude)];
     }
   </script>
