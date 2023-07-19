@@ -27,10 +27,11 @@
       // Loop through GPS data and add LatLng objects to the array
       gpsDataArray.forEach(gpsData => {
         parsedGPSData = parseGPSData(gpsData)
-        console.log(parsedGPSData)
         const [latitude, longitude] = parsedGPSData;
         coordinates.push(L.latLng(latitude, longitude));
       });
+
+      console.log(coordinates)
 
       // Create a polyline and add it to the map
       const polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
