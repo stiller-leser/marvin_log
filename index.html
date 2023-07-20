@@ -65,10 +65,10 @@
 
     // Function to parse GPS coordinates from the data
     function parseGPSData(gpsData) {
-      const [, latitude, latitudeMin, latitudeDir, longitude, longitudeMin, longitudeDir] = gpsData.match(/(\d+).(\d+)([NS]),(\d+).(\d+)([EW])/);
+      const [, latitudeDeg, latitudeMin, latitudeSec, latitudeDir, longitudeDeg, longitudeMin, longitudeSec, longitudeDir] = gpsData.match(/(\d{2})(\d{2}).(\d+)([NS]),(\d{3})(\d{2}).(\d+)([EW])/);
 
-      const latitudeDecimal = parseFloat(latitude) + parseFloat(latitudeMin) / 60;
-      const longitudeDecimal = parseFloat(longitude) + parseFloat(longitudeMin) / 60;
+      const latitudeDecimal = parseFloat(latitude) + parseFloat(latitudeMin) / 60 + (parseFloat(latitudeSec)) / 3600;
+      const longitudeDecimal = parseFloat(longitude) + parseFloat(longitudeMin) / 60 + (parseFloat(longitudeSec)) / 3600;
 
       return {
         latitude: (latitudeDir === "S" ? -1 : 1) * latitudeDecimal,
