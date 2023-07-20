@@ -65,7 +65,7 @@
 
     // Function to parse GPS coordinates from the data
     function parseGPSData(gpsData) {
-      const [timestamp, latitude, latitudeMin, latitudeDir, longitude, longitudeMin, longitudeDir, altitude, speed] =
+      const [, timestamp, latitude, latitudeMin, latitudeDir, longitude, longitudeMin, longitudeDir, altitude, speed] =
         gpsData.match(/: (\d+\.\d+),(\d+)(\d+\.\d+)([NS]),(\d+)(\d+\.\d+)([EW]),(.*),(.*),.*,.*/);
 
       console.log(latitude)
