@@ -59,7 +59,24 @@
           const latitudeInDegrees = parseDegrees(latitude, 2)
           const longitudeInDegrees = parseDegrees(longitude, 3)
 
-          var marker = L.marker([latitudeInDegrees, longitudeInDegrees]).addTo(map);
+          let popupContent = `
+            <h1>GPS-Daten</h1>
+            <ul>
+                <li><strong>Zeit:</strong> ${time}</li>
+                <li><strong>Breitengrad:</strong> ${latitude}</li>
+                <li><strong>Längengrad:</strong> ${longitude}</li>
+                <li><strong>Genauigkeit:</strong> ${accuracy}</li>
+                <li><strong>Höhe:</strong> ${altitude}</li>
+                <li><strong>GNS-Positionierungsmodus:</strong> ${gnspositioningmode}</li>
+                <li><strong>Kurs:</strong> ${course}</li>
+                <li><strong>Geschwindigkeit über Grund km/h:</strong> ${sogkmh}</li>
+                <li><strong>Geschwindigkeit über Grund Knoten:</strong> ${sogknots}</li>
+                <li><strong>Datum Jahr Monat Tag:</strong> ${date}</li>
+                <li><strong>Satelliten:</strong> ${satellites}</li>
+            </ul>
+          `;
+
+          var marker = L.marker([latitudeInDegrees, longitudeInDegrees]).addTo(map).bindPopup(popupContent);
 
           coordinates.push([latitudeInDegrees, longitudeInDegrees]);
         } else {
