@@ -71,10 +71,10 @@
       map.setView(new L.LatLng(lastEntry[0], lastEntry[1]))
 
       // Create a polyline and add it to the map
-      // const polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
+      const polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
 
-      // // Fit the map view to the bounds of the polyline
-      // map.fitBounds(polyline.getBounds());
+      // Fit the map view to the bounds of the polyline
+      map.fitBounds(polyline.getBounds());
     }
 
     function parseDegrees(positionString, substring) {
