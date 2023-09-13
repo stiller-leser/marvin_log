@@ -61,7 +61,7 @@
 
           var marker = L.marker([latitudeInDegrees, longitudeInDegrees]).addTo(map);
 
-          coordinates.push(latitude, longitude);
+          coordinates.push([latitude, longitude]);
         } else {
           console.log("Match for gpsData was null:", gpsData)
         }
