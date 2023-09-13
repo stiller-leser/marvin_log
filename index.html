@@ -41,7 +41,7 @@
       gpsDataArray.forEach(gpsData => {
         const regex = /\+QGPSLOC:\s*(\d+\.\d+),(\d+\.\d+[NS]),(\d+\.\d+[WE]),(\d+\.\d+),(\d+\.\d+),(\d+),(\d+\.\d+),(\d+\.\d+),(\d+\.\d+),(\d+),(\d+)/;
         const match = gpsData.match(regex);
-        if(typeof(match) != null) {
+        if(match != null) {
           const [, time, latitude, longitude, accuracy, altitude, gnspositioningmode, course, sogkmh, sogknots, date, satellites] = match;
 
           console.log("Time:", time);
