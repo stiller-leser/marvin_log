@@ -39,10 +39,9 @@
 
       // Loop through GPS data and add LatLng objects to the array
       gpsDataArray.forEach(gpsData => {
-        const regex = /\+QGPSLOC:\s*(\d+\.\d+),(\d+\.\d+[NS]),(\d+\.\d+[WE]),(\d+\.\d+),-?\d+\.\d+),(\d+),(\d+\.\d+),(\d+\.\d+),(\d+\.\d+),(\d+),(\d+)/;
+        const regex = /\+QGPSLOC:\s*(\d+\.\d+),(\d+\.\d+[NS]),(\d+\.\d+[WE]),(\d+\.\d+),(-?\d+\.\d+),(\d+),(\d+\.\d+),(\d+\.\d+),(\d+\.\d+),(\d+),(\d+)/;
         const match = gpsData.match(regex);
         if(match != null) {
-          "+QGPSLOC: 223343.0,5240.0832N,00812.6297E,0.8,32.0,2,263.24,0.0,0.0,190723,07"
           const [, time, latitude, longitude, accuracy, altitude, gnspositioningmode, course, sogkmh, sogknots, date, satellites] = match;
 
           // console.log("Time:", time);
@@ -63,7 +62,7 @@
           let popupContent = `
             <h1>GPS-Daten</h1>
             <ul>
-                <li><strong>Zeit:</strong> ${time}</li>
+                <li><strong>Zeit:</strong> ${parseTime(time).toLocaleDateString()}</li>
                 <li><strong>Breitengrad:</strong> ${latitude}</li>
                 <li><strong>Längengrad:</strong> ${longitude}</li>
                 <li><strong>Genauigkeit:</strong> ${accuracy}</li>
@@ -72,7 +71,7 @@
                 <li><strong>Kurs:</strong> ${course}</li>
                 <li><strong>Geschwindigkeit über Grund km/h:</strong> ${sogkmh}</li>
                 <li><strong>Geschwindigkeit über Grund Knoten:</strong> ${sogknots}</li>
-                <li><strong>Datum Jahr Monat Tag:</strong> ${date}</li>
+                <li><strong>Datum Jahr Monat Tag:</strong> ${parseDate(date).toLocaleDateString()}</li>
                 <li><strong>Satelliten:</strong> ${satellites}</li>
             </ul>
           `;
@@ -112,6 +111,22 @@
       }
 
       return decimalDegrees
+    }
+
+    function parseDate(dateString) {
+      const year = parseInt(dateString.substring(0, 2), 10);
+      const month = parseInt(dateString.substring(2, 4), 10) - 1; // Months are zero-based (0-11)
+      const day = parseInt(dateString.substring(4, 6), 10);
+
+      return new Date(year + 2000, month, day);
+    }
+
+    function parseTime(timeString) {
+      const hours = parseInt(timeString.substring(0, 2), 10);
+      const minutes = parseInt(timeString.substring(2, 4), 10);
+      const seconds = parseInt(timeString.substring(4, 6), 10);
+
+      return new Date(1970, 0, 1, hours, minutes, seconds);
     }
 
     // Fetch GPS data from the server and create the map with the polyline
