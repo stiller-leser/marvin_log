@@ -39,9 +39,10 @@
 
       // Loop through GPS data and add LatLng objects to the array
       gpsDataArray.forEach(gpsData => {
-        const regex = /\+QGPSLOC:\s*(\d+\.\d+),(\d+\.\d+[NS]),(\d+\.\d+[WE]),(\d+\.\d+),(-?(\d+\.\d+)),(\d+),(\d+\.\d+),(\d+\.\d+),(\d+\.\d+),(\d+),(\d+)/;
+        const regex = /\+QGPSLOC:\s*(\d+\.\d+),(\d+\.\d+[NS]),(\d+\.\d+[WE]),(\d+\.\d+),-?\d+\.\d+),(\d+),(\d+\.\d+),(\d+\.\d+),(\d+\.\d+),(\d+),(\d+)/;
         const match = gpsData.match(regex);
         if(match != null) {
+          "+QGPSLOC: 223343.0,5240.0832N,00812.6297E,0.8,32.0,2,263.24,0.0,0.0,190723,07"
           const [, time, latitude, longitude, accuracy, altitude, gnspositioningmode, course, sogkmh, sogknots, date, satellites] = match;
 
           // console.log("Time:", time);
