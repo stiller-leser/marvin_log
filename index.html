@@ -68,14 +68,13 @@
       // map.fitBounds(polyline.getBounds());
     }
 
-    function parseDegrees(degress) {
-      const decimalMinutes = parseFloat(latitude.substring(2, latitude.length - 1));
-      const hemisphere = latitude.charAt(latitude.length - 1);
+    function parseDegrees(value) {
+      const decimalMinutes = parseFloat(value.substring(2, value.length - 1));
+      const hemisphere = value.charAt(value.length - 1);
 
       // Calculate decimal degrees
       let decimalDegrees = degrees + (decimalMinutes / 60);
 
-      // If the hemisphere indicator is 'S', make the latitude negative
       if (hemisphere === 'S') {
         decimalDegrees = -decimalDegrees;
       }
