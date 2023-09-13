@@ -39,7 +39,7 @@
 
       // Loop through GPS data and add LatLng objects to the array
       gpsDataArray.forEach(gpsData => {
-        const regex = /\+QGPSLOC:\s*(\d+\.\d+),(\d+\.\d+[NS]),(\d+\.\d+[WE]),(\d+\.\d+),(\d+\.\d+),(\d+),(\d+\.\d+),(\d+\.\d+),(\d+\.\d+),(\d+),(\d+)/;
+        const regex = /\+QGPSLOC:\s*(\d+\.\d+),(\d+\.\d+[NS]),(\d+\.\d+[WE]),(\d+\.\d+),(-?(\d+\.\d+)),(\d+),(\d+\.\d+),(\d+\.\d+),(\d+\.\d+),(\d+),(\d+)/;
         const match = gpsData.match(regex);
         if(match != null) {
           const [, time, latitude, longitude, accuracy, altitude, gnspositioningmode, course, sogkmh, sogknots, date, satellites] = match;
@@ -71,10 +71,10 @@
       map.setView(new L.LatLng(lastEntry[0], lastEntry[1]))
 
       // Create a polyline and add it to the map
-      const polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
+      // const polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
 
-      // Fit the map view to the bounds of the polyline
-      map.fitBounds(polyline.getBounds());
+      // // Fit the map view to the bounds of the polyline
+      // map.fitBounds(polyline.getBounds());
     }
 
     function parseDegrees(positionString, substring) {
