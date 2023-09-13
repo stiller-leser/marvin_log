@@ -126,7 +126,12 @@
       const minutes = parseInt(timeString.substring(2, 4), 10);
       const seconds = parseInt(timeString.substring(4, 6), 10);
 
-      return new Date(1970, 0, 1, hours, minutes, seconds);
+      const date = new Date();
+      date.setHours(hours);
+      date.setMinutes(minutes);
+      date.setSeconds(seconds);
+
+      return date;
     }
 
     // Fetch GPS data from the server and create the map with the polyline
