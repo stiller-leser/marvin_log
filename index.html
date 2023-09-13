@@ -41,24 +41,26 @@
       gpsDataArray.forEach(gpsData => {
         const regex = /\+QGPSLOC:\s*(\d+\.\d+),(\d+\.\d+[NS]),(\d+\.\d+[WE]),(\d+\.\d+),(\d+\.\d+),(\d+),(\d+\.\d+),(\d+\.\d+),(\d+\.\d+),(\d+),(\d+)/;
         const match = gpsData.match(regex);
-        const [, time, latitude, longitude, accuracy, altitude, gnspositioningmode, course, sogkmh, sogknots, date, satellites] = match;
+        if(typeof(match) != null) {
+          const [, time, latitude, longitude, accuracy, altitude, gnspositioningmode, course, sogkmh, sogknots, date, satellites] = match;
 
-        console.log("Time:", time);
-        console.log("Latitude:", latitude);
-        console.log("Longitude:", longitude);
-        console.log("Accuaracy:", accuracy);
-        console.log("Altitude:", altitude);
-        console.log("GNS Positioning Mode:", gnspositioningmode);
-        console.log("Course:", course);
-        console.log("Speed over ground kmh:", sogkmh);
-        console.log("Speed over ground knots:", sogknots);
-        console.log("yearmonthday:", date);
-        console.log("Satellites:", satellites)
+          console.log("Time:", time);
+          console.log("Latitude:", latitude);
+          console.log("Longitude:", longitude);
+          console.log("Accuaracy:", accuracy);
+          console.log("Altitude:", altitude);
+          console.log("GNS Positioning Mode:", gnspositioningmode);
+          console.log("Course:", course);
+          console.log("Speed over ground kmh:", sogkmh);
+          console.log("Speed over ground knots:", sogknots);
+          console.log("yearmonthday:", date);
+          console.log("Satellites:", satellites)
 
-        const latitudeInDegrees = parseDegrees(latitude, 2)
-        const longitudeInDegrees = parseDegrees(longitude, 3)
+          const latitudeInDegrees = parseDegrees(latitude, 2)
+          const longitudeInDegrees = parseDegrees(longitude, 3)
 
-        var marker = L.marker([latitudeInDegrees, longitudeInDegrees]).addTo(map);
+          var marker = L.marker([latitudeInDegrees, longitudeInDegrees]).addTo(map);
+        }
       });
 
       // Create a polyline and add it to the map
