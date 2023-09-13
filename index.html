@@ -15,18 +15,11 @@
     crossorigin=""
   >
   </script>
-  <script 
-    src="gps.js"
-    crossorigin=""
-  ></script>
-
 </head>
 <body>
   <div id="map" style="height: 1080px;"></div>
 
-  <script>
-    var gps = new GPS;
-    
+  <script>    
     // Initialize the map
     map = L.map('map', {
       center: [0,0],
@@ -39,10 +32,6 @@
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    gps.on('data', () => {
-      var marker = L.marker([latitude, longitude]).addTo(map);
-    });
-
     // Function to create the map and draw a polyline connecting GPS data points
     function createMap(gpsDataArray) {
       // Array to store the GPS coordinates as LatLng objects
@@ -50,7 +39,26 @@
 
       // Loop through GPS data and add LatLng objects to the array
       gpsDataArray.forEach(gpsData => {
-        gps.update(gpsData);
+        const regex = /\+QGPSLOC:\s*(\d+\.\d+),(\d+\.\d+[NS]),(\d+\.\d+[WE]),(\d+\.\d+),(\d+\.\d+),(\d+),(\d+\.\d+),(\d+\.\d+),(\d+\.\d+),(\d+),(\d+)/;
+        const match = gpsData.match(regex);
+        const [, time, latitude, longitude, accuracy, altitude, gnspositioningmode, course, sogkmh, sogknots, date, satellites] = match;
+
+        console.log("Time:", time);
+        console.log("Latitude:", latitude);
+        console.log("Longitude:", longitude);
+        console.log("Accuaracy:", accuracy);
+        console.log("Altitude:", altitude);
+        console.log("GNS Positioning Mode:", gnspositioningmode);
+        console.log("Course:", course);
+        console.log("Speed over ground kmh:", sogkmh);
+        console.log("Speed over ground knots:", sogknots);
+        console.log("yearmonthday:", date);
+        console.log("Satellites:", satellites)
+
+        const latitudeInDegrees = parseDegrees(parseInt(latitude.substring(0, 2), 10))
+        const longitudeInDegrees = parseDegrees(parseInt(longitude.substring(0, 3), 10))
+
+        var marker = L.marker([latitudeInDegress, longitudeInDegrees]).addTo(map);
       });
 
       // Create a polyline and add it to the map
@@ -58,6 +66,25 @@
 
       // Fit the map view to the bounds of the polyline
       // map.fitBounds(polyline.getBounds());
+    }
+
+    function parseDegrees(degress) {
+      const decimalMinutes = parseFloat(latitude.substring(2, latitude.length - 1));
+      const hemisphere = latitude.charAt(latitude.length - 1);
+
+      // Calculate decimal degrees
+      let decimalDegrees = degrees + (decimalMinutes / 60);
+
+      // If the hemisphere indicator is 'S', make the latitude negative
+      if (hemisphere === 'S') {
+        decimalDegrees = -decimalDegrees;
+      }
+
+      if (hemisphere === 'W') {
+        decimalDegrees = -decimalDegrees123;
+      }
+
+      return decimalDegrees
     }
 
     // Fetch GPS data from the server and create the map with the polyline
