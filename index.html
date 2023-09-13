@@ -33,7 +33,7 @@
     }).addTo(map);
 
     // Function to create the map and draw a polyline connecting GPS data points
-    function createMap(gpsDataArray) {
+    function createMarkers(gpsDataArray) {
       // Array to store the GPS coordinates as LatLng objects
       const coordinates = [];
 
@@ -44,30 +44,37 @@
         if(match != null) {
           const [, time, latitude, longitude, accuracy, altitude, gnspositioningmode, course, sogkmh, sogknots, date, satellites] = match;
 
-          console.log("Time:", time);
-          console.log("Latitude:", latitude);
-          console.log("Longitude:", longitude);
-          console.log("Accuaracy:", accuracy);
-          console.log("Altitude:", altitude);
-          console.log("GNS Positioning Mode:", gnspositioningmode);
-          console.log("Course:", course);
-          console.log("Speed over ground kmh:", sogkmh);
-          console.log("Speed over ground knots:", sogknots);
-          console.log("yearmonthday:", date);
-          console.log("Satellites:", satellites)
+          // console.log("Time:", time);
+          // console.log("Latitude:", latitude);
+          // console.log("Longitude:", longitude);
+          // console.log("Accuaracy:", accuracy);
+          // console.log("Altitude:", altitude);
+          // console.log("GNS Positioning Mode:", gnspositioningmode);
+          // console.log("Course:", course);
+          // console.log("Speed over ground kmh:", sogkmh);
+          // console.log("Speed over ground knots:", sogknots);
+          // console.log("yearmonthday:", date);
+          // console.log("Satellites:", satellites)
 
           const latitudeInDegrees = parseDegrees(latitude, 2)
           const longitudeInDegrees = parseDegrees(longitude, 3)
 
           var marker = L.marker([latitudeInDegrees, longitudeInDegrees]).addTo(map);
+
+          coordinates.push(latitude, longitude);
+        } else {
+          console.log("Match for gpsData was null:", gpsData)
         }
       });
 
+      lastEntry = coordinates[coordinates.length -1]
+      map.setView(new L.LatLng(lastEntry[0], lastEntry[1]))
+
       // Create a polyline and add it to the map
-      // const polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
+      const polyline = L.polyline(coordinates, { color: 'blue' }).addTo(map);
 
       // Fit the map view to the bounds of the polyline
-      // map.fitBounds(polyline.getBounds());
+      map.fitBounds(polyline.getBounds());
     }
 
     function parseDegrees(positionString, substring) {
@@ -93,7 +100,7 @@
     fetch('/gps')
       .then(response => response.json())
       .then(data => {
-        createMap(data.gpsDataArray);
+        createMarkers(data.gpsDataArray);
       })
       .catch(error => {
         console.error('Error fetching GPS data:', error);
